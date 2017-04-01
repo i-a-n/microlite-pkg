@@ -1,5 +1,5 @@
 # microlite... Now a package!
-microlite is an über-small (3.3kb) lightbox that leaves a microscopic footprint. It was originally 
+microlite is an über-small (3.6kb) lightbox that leaves a microscopic footprint. It was originally 
 [built by @danklammer](https://github.com/danklammer/microlite). I'll make sure this repo (for packaging) maintains feature 
 parity with that original repo.
 
