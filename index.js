@@ -1,9 +1,11 @@
 /*
+
 microLite.js — NPM package edition!
 --------------------------
 An uber small 1kb lightbox, all originally
 based on microlite by @danklammer:
 https://github.com/danklammer/microlite
+
 */
 
 module.exports = function microLite(e) {
@@ -33,16 +35,17 @@ module.exports = function microLite(e) {
             zoomY = zoomPadding;
     }
 
+    // Give MicroLite an identifier
     mlite.setAttribute('id', 'ml');
 
-    // Set onClick 
+    // Set onClick so MicroLite can be destroyed from DOM when clicked
     mlite.setAttribute(
         'onclick',
         'this.className = " "; addEventListener("transitionend", function() { if (this.parentNode) { this.parentNode.removeChild(this); } });'
     );
 
-    // Create image container 
-    mlite.innerHTML = '<div class="mlbg"></div><div class="mli"></div><style>#ml{cursor:pointer;position:fixed;top:0;left:0;width:100%;height:100%}.mlbg{position:fixed;width:100%;height:100%;background:#0a0a0a;opacity:0;will-change:opacity;transition:opacity .4s ease}.mli{background:url(' + e.target.href + ')no-repeat center,url(' + childNode.src + ')no-repeat center;background-size:contain;width:' + childNode.width + 'px;height:' + childNode.height + 'px;transform:translate3d(' + imgX + 'px, ' + imgY + 'px, 0) scale(1);transform-origin:top left;will-change:transform;transition:transform .4s ease}.s .mlbg{opacity:0.8}.s .mli{transform: translate3d(' + zoomX + 'px, ' + zoomY + 'px, 0) scale(' + scaleMax + ')}</style>';
+    // Create image container with in-page <styles>
+    mlite.innerHTML = '<div class="mlbg"></div><div class="mli"></div><style>#ml{cursor:pointer;position:fixed;top:0;left:0;width:100%;height:100%}.mlbg{position:fixed;width:100%;height:100%;background:#0a0a0a;opacity:0;will-change:opacity;transition:opacity .4s ease}.mli{background:url(' + e.currentTarget.href + ')no-repeat center,url(' + childNode.src + ')no-repeat center;background-size:contain;width:' + childNode.width + 'px;height:' + childNode.height + 'px;transform:translate3d(' + imgX + 'px, ' + imgY + 'px, 0) scale(1);transform-origin:top left;will-change:transform;transition:transform .4s ease}.s .mlbg{opacity:0.8}.s .mli{transform: translate3d(' + zoomX + 'px, ' + zoomY + 'px, 0) scale(' + scaleMax + ')}</style>';
 
     // Append MicroLite to bottom of page
     body.appendChild(mlite);
@@ -58,7 +61,7 @@ module.exports = function microLite(e) {
     });
 }
 
-// Event handler. Attaches events and also cancels them.
+// Event handler. Attaches events and also cancels them if image is closed.
 function mliteEventHandler(evt) {
     var mliteOpen = document.getElementById('ml');
     var isEscape = false;
@@ -81,6 +84,7 @@ function mliteEventHandler(evt) {
             }
         }
     } else {
+
         // Remove event listeners if microlite isn't open any longer
         window.removeEventListener('keydown', mliteEventHandler);
         window.removeEventListener('wheel', mliteEventHandler);
